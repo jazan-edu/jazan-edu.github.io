@@ -174,7 +174,7 @@
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0b7a6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 16c1.5-2 2.5-2 3 0s1.5 2 3 0"/></svg>
         </div>
         <h1> أهداف الأداء الوظيفي    </h1>
-        <p class="sub">المشرف العام - اخصائي/ة الإدارة المدرسية : سلمه الله /تحية طيبة وبعد نامل التكرم بالإطلاع على أهداف الأداء الوظيفي ثم التوفيع في الخانة المناسبة وحفظ الطلب </p>
+        <p class="sub">اخصائي/ة الإدارة المدرسية : سلمه الله /تحية طيبة وبعد نامل التكرم بالإطلاع على أهداف الأداء الوظيفي ثم التوفيع في الخانة المناسبة وحفظ الطلب </p>
       </div>
       <ol class="steps">
         <li>أدخل السجل المدني</li>
@@ -337,6 +337,13 @@ async function onLetter(res) {
     unbusy();
     const msg = $('#loginMsg');
     msg.textContent = 'لم يتم العثور على نموذج مرتبط بهذا السجل المدني. تأكد من الرقم أو تواصل مع الإدارة.';
+    msg.classList.remove('hidden');
+    return;
+  }
+  if (res.signed) {
+    unbusy();
+    const msg = $('#loginMsg');
+    msg.textContent = 'تم استلام نموذجك الموقّع مسبقاً، ولا يمكن التوقيع أكثر من مرة. شكراً لك.';
     msg.classList.remove('hidden');
     return;
   }
