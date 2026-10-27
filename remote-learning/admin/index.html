@@ -49,6 +49,23 @@
   var loader = document.getElementById('loader');
   document.getElementById('app').addEventListener('load', function () { loader.classList.add('hide'); });
   setTimeout(function () { document.getElementById('fallback').classList.add('show'); }, 8000);
+
+  // تنزيل ملفات Excel المصدّرة من المنصة عبر الصفحة الأساسية (التنزيل من داخل الإطار يُنتج ملفاً تالفاً)
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (!d || d.type !== 'jz-download' || !d.base64) return;
+    if (!/^https:\/\/([a-z0-9-]+\.)*googleusercontent\.com$/.test(e.origin) && e.origin !== 'https://script.google.com') return;
+    var bin = atob(d.base64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    var blob = new Blob([bytes], { type: d.mime || 'application/octet-stream' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = String(d.fileName || 'export.xlsx').replace(/[\\\/:*?"<>|]/g, '-');
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 5000);
+  });
 </script>
 </body>
 </html>
